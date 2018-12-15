@@ -1,0 +1,20 @@
+{
+  "name": "circleci-sandbox",
+  "version": "1.0.0",
+  "description": "Just for playing around with CircleCI",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo \"Build successful!\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mattiasnixell/circleci-sandbox.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mattiasnixell/circleci-sandbox/issues"
+  },
+  "homepage": "https://github.com/mattiasnixell/circleci-sandbox#readme"
+}
