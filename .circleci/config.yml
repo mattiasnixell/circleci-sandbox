@@ -36,9 +36,9 @@ jobs:
   build_app:
     executor: build-test-deploy-executor
     steps:
-      - checkout
       - attach_workspace:
           at: ~/build-test-deploy
+      - checkout
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
