@@ -36,13 +36,13 @@ jobs:
   build_app:
     executor: build-test-deploy-executor
     steps:
-      - attach_workspace:
-          at: ~/build-test-deploy
       - checkout
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
             - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - attach_workspace:
+          at: ~/build-test-deploy
       - run: yarn build
       - persist_to_workspace:
           root: .
