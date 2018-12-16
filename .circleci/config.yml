@@ -34,26 +34,23 @@ jobs:
       - run: yarn test
 
   build_app:
-    docker:
-      - image: circleci/node:8.10.0
+    executor: build-test-deploy-executor
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/build-test-deploy
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
             - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - attach_workspace:
-          at: ~/build-test-deploy
       - run: yarn build
-      - run: node dist/compiled-ts/index.js
       - persist_to_workspace:
           root: .
           paths:
             - dist/compiled-ts
 
   run:
-    docker:
-      - image: circleci/node:8.10.0
+    executor: build-test-deploy-executor
     steps:
       - attach_workspace:
           at: ~/build-test-deploy
