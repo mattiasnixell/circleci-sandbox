@@ -4,20 +4,21 @@ jobs:
   install:
     docker:
       - image: circleci/node:8.10.0
+
     steps:
       - checkout
       - restore_cache:
-        name: Restore Yarn Package Cache
-        keys:
-          - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-          - yarn-packages-{{ .Branch }}
-          - yarn-packages-master
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-{{ .Branch }}
+            - yarn-packages-master
       - run: yarn install
       - save_cache:
-        key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-        paths:
-          - "node_modules"
-          - "yarn.lock"
+          key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - "node_modules"
+            - "yarn.lock"
 
   build:
     docker:
@@ -36,8 +37,8 @@ workflows:
     jobs:
       - install
       - build:
-        requires:
-          - install
+          requires:
+            - install
       - run:
-        requires:
-          - build
+          requires:
+            - build
