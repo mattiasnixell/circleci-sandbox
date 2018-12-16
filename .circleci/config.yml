@@ -1,9 +1,43 @@
 version: 2.1
 
 jobs:
-  build:
+  install:
     docker:
       - image: circleci/node:8.10.0
     steps:
       - checkout
-      - run: yarn run build
+      - restore_cache:
+        name: Restore Yarn Package Cache
+        keys:
+          - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          - yarn-packages-{{ .Branch }}
+          - yarn-packages-master
+      - run: yarn install
+      - save_cache:
+        key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+        paths:
+          - "node_modules"
+          - "yarn.lock"
+
+  build:
+    docker:
+      - image: circleci/node:8.10.0
+    steps:
+      - run: yarn build
+
+  run:
+    docker:
+      - image: circleci/node:8.10.0
+    steps:
+      - run: node dist/compiled-ts/index.js
+
+workflows:
+  install-build-run:
+    jobs:
+      - install
+      - build:
+        requires:
+          - install
+      - run:
+        requires:
+          - build

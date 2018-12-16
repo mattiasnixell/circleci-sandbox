@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "es2015",
+    "module": "commonjs",
+    "outDir": "./dist/compiled-ts",
+    "types": [
+      "node"
+    ],
+    "strict": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "coverage",
+    "dist",
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}
