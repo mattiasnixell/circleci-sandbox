@@ -47,7 +47,8 @@ jobs:
       - run: yarn build
       - persist_to_workspace:
           root: .
-          paths: dist/compiled-ts
+          paths:
+            - dist/compiled-ts
 
   run:
     docker:
@@ -55,7 +56,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/build-test-deploy
-      - run: node ./dist/compiled-ts/index.js
+      - run: node dist/compiled-ts/index.js
 
 workflows:
   build-test-deploy:
