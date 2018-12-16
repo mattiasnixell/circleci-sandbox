@@ -1,10 +1,14 @@
 version: 2.1
 
-jobs:
-  build:
+executors:
+  build-test-deploy-executor:
     docker:
       - image: circleci/node:8.10.0
+    working_directory: ~/build-test-deploy
 
+jobs:
+  build_base:
+    executor: build-test-deploy-executor
     steps:
       - checkout
       - restore_cache:
@@ -17,8 +21,17 @@ jobs:
       - save_cache:
           key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
-            - "node_modules"
-            - "yarn.lock"
+            - ./node_modules
+
+  test_unit:
+    executor: build-test-deploy-executor
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - run: yarn test
 
   build_app:
     docker:
@@ -30,15 +43,24 @@ jobs:
     docker:
       - image: circleci/node:8.10.0
     steps:
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run: node dist/compiled-ts/index.js
 
 workflows:
-  install-build-run:
+  build-test-deploy:
     jobs:
-      - build
+      - build_base
       - build_app:
           requires:
-            - build
+            - build_base
+      - test_unit:
+          requires:
+            - build_base
       - run:
           requires:
             - build_app
+            - test_unit
