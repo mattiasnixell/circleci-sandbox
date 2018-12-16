@@ -45,6 +45,7 @@ jobs:
       - attach_workspace:
           at: ~/build-test-deploy
       - run: yarn build
+      - run: node dist/compiled-ts/index.js
       - persist_to_workspace:
           root: .
           paths:
