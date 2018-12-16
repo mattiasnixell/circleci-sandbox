@@ -37,6 +37,11 @@ jobs:
     docker:
       - image: circleci/node:8.10.0
     steps:
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run: yarn build
 
   run:
