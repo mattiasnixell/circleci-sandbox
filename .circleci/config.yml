@@ -51,6 +51,8 @@ jobs:
 
   run:
     executor: build-test-deploy-executor
+    environment:
+      SAY_HELLO_TO: World
     steps:
       - attach_workspace:
           at: ~/build-test-deploy
