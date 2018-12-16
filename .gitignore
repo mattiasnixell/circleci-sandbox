@@ -62,3 +62,6 @@ typings/
 
 # Jetbrains .idea config folder
 .idea
+
+# Build folder
+dist
